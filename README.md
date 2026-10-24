@@ -1,138 +1,103 @@
-# TP1 : Initiation à Python
-## POO via Python - 2025/2026
-**Préparé par :** Pr. Miloudi Chaymae
+# Analyse et modélisation des séries temporelles : exportations du Maroc (ARIMA, EViews)
 
----
+> Application de la méthode de Box-Jenkins à la série des exportations de biens et services du Maroc (2000-2025) : stationnarité, identification, estimation, diagnostic des résidus et prévision jusqu'en 2030.
 
-## 📁 Structure des fichiers
+Projet académique réalisé dans le cadre du module **Économétrie** (Pr. Soumaya Fellaji), Master Intelligence Artificielle pour l'Économie Numérique et la Gestion, Faculté des Sciences Juridiques, Économiques et Sociales de Tanger, Université Abdelmalek Essaâdi.
 
-- `exercice1.py` - Manipulation de 3 valeurs entières
-- `exercice2.py` - Résolution d'équation du second degré
-- `exercice3.py` - Agence de location de voitures
-- `exercice4.py` - Saisie sécurisée (nombre positif)
-- `exercice5.py` - Table de multiplication
-- `exercice6.py` - Calcul des bénéfices d'entreprise
-- `tp1_menu.py` - Menu principal pour exécuter tous les exercices
-- `README.md` - Ce fichier
+**Équipe :** Wiam Chentouf, Raouia Benajiba, Ferdaous Attioui, Fatima Rafiai, Imane Naaim, Ibtissam Bakkali Yedri
 
----
+## Données
 
-## 🚀 Comment utiliser ces fichiers dans VS Code
+| | |
+|---|---|
+| Série | Exports of Goods and Services for Morocco (`MARBXUSD`) |
+| Fréquence | annuelle |
+| Période | 2000 à 2025 (26 observations) |
+| Unité | dollars US courants |
+| Source | FRED (Federal Reserve Bank of St. Louis) |
+| Fichier | `data_projet_eco.xlsx` (feuille `Annual`, colonnes `observation_date` et `MARBXUSD`) |
 
-### Option 1 : Exécuter un exercice individuel
-1. Ouvrez VS Code
-2. Ouvrez le fichier de l'exercice souhaité (ex: `exercice1.py`)
-3. Appuyez sur **F5** ou cliquez sur le bouton ▶️ "Run Python File"
-4. Suivez les instructions dans le terminal
+Les exportations passent d'environ 7,9 milliards de dollars en 2000 à environ 68,2 milliards en 2025.
 
-### Option 2 : Utiliser le menu principal
-1. Ouvrez le fichier `tp1_menu.py`
-2. Exécutez-le (F5 ou ▶️)
-3. Choisissez l'exercice à exécuter via le menu interactif
+## Contenu du projet
 
----
+### Partie théorique
 
-## 📝 Description des exercices
+- Processus TS (Trend Stationary) et DS (Difference Stationary), lien avec les modèles AR, MA et ARIMA
+- Stationnarité, test de Dickey-Fuller augmenté (ADF), transformations (logarithme, différenciation)
+- Principe de parcimonie et critères de sélection (AIC, BIC), mesures de qualité de prévision (MAE, RMSE, MAPE)
+- Hétéroscédasticité, modèles ARCH et GARCH, différence entre les deux
+- Test de normalité de Jarque-Bera
+- Caractéristiques des séries financières : queues épaisses (*fat tails*) et volatilité par grappes
 
-### Exercice 1 : Manipulation de 3 valeurs
-- Lire 3 valeurs entières au clavier
-- Calculer et afficher : somme, moyenne, produit
-- Trier et afficher les valeurs en ordre croissant
+### Partie pratique
 
-### Exercice 2 : Résolution d'équation
-- Résoudre l'équation : ax² + bx + c = 0
-- Vérifier l'existence de racines réelles
-- Calculer les valeurs des racines si elles existent
-- Utilise la fonction `sqrt()` de la bibliothèque `math`
+Étude de la série `MARBXUSD` (voir section Données), réalisée sous **EViews**.
 
-### Exercice 3 : Location de voitures
-Tarifs disponibles :
-- **Essence** : 150 MAD/jour + 1,20 MAD/km
-- **Diesel** : 220 MAD/jour + 0,70 MAD/km
+| Étape | Démarche |
+|---|---|
+| 1. Série brute (EBS) | Analyse graphique, corrélogramme, test ADF |
+| 2. Transformation logarithmique (LOG_EBS) | Stabilisation de la variance, nouveau test ADF |
+| 3. Différenciation première D(LOG_EBS) | Corrélogramme et ADF, série stationnaire I(1) |
+| 4. Identification et estimation | Modèle ARIMA(0,1,0) avec dérive |
+| 5. Diagnostic des résidus | Ljung-Box, Jarque-Bera, ARCH-LM |
+| 6. Prévision | Prévision jusqu'en 2030 |
 
-Le programme calcule le meilleur choix selon la distance et la durée.
+## Résultats principaux
 
-### Exercice 4 : Saisie sécurisée
-- Saisie uniquement de nombres positifs
-- Utilise une boucle `while`
-- Continue à demander jusqu'à obtenir un nombre valide
+### Tests de stationnarité (ADF)
 
-### Exercice 5 : Table de multiplication
-- Affiche la table de multiplication d'un entier
-- Utilise une boucle `for`
-- Affichage de 1 à 10
+| Série | Spécification | Statistique t | p-value | Conclusion |
+|---|---|---|---|---|
+| EBS (niveau) | constante et tendance | -1,793 | 0,6775 | racine unitaire non rejetée |
+| LOG_EBS (niveau) | constante et tendance | -2,584 | 0,2895 | racine unitaire non rejetée |
+| D(LOG_EBS) | constante | -4,281 | 0,0030 | stationnaire, la série est I(1) |
 
-### Exercice 6 : Bénéfices d'entreprise
-Détermine si l'entreprise réalise :
-- Un **bénéfice** (revenu > coût)
-- Une **perte** (revenu < coût)
-- Le **seuil de rentabilité** (revenu = coût)
+### Modèle retenu : ARIMA(0,1,0) avec dérive
 
----
-
-## 💡 Conseils pour VS Code
-
-### Installation de Python
-Si Python n'est pas installé :
-1. Téléchargez Python sur [python.org](https://www.python.org/downloads/)
-2. Cochez "Add Python to PATH" lors de l'installation
-
-### Extension VS Code recommandée
-- **Python** (de Microsoft) : recherchez "Python" dans les extensions (Ctrl+Shift+X)
-
-### Raccourcis utiles
-- **F5** : Exécuter le fichier Python
-- **Ctrl+`** : Ouvrir/fermer le terminal
-- **Ctrl+S** : Sauvegarder le fichier
-
----
-
-## 🎯 Comment tester vos programmes
-
-### Exemples de données de test
-
-**Exercice 1 :**
 ```
-Valeurs : 10, 5, 8
-Résultat attendu : Somme=23, Moyenne=7.67, Produit=400, Trié=[5, 8, 10]
+ΔLOG_EBS(t) = c + ε(t)          avec c ≈ 0,0863 (p = 0,0024)
 ```
 
-**Exercice 2 :**
-```
-a=1, b=-5, c=6
-Résultat attendu : Deux racines (x₁=3, x₂=2)
-```
+La constante estimée correspond à une croissance moyenne d'environ 9 % par an des exportations.
 
-**Exercice 3 :**
-```
-Distance=100 km, Durée=2 jours
-Essence: 150×2 + 1.20×100 = 420 MAD
-Diesel: 220×2 + 0.70×100 = 510 MAD
-Meilleur choix : Essence
-```
+### Diagnostic des résidus
 
-**Exercice 5 :**
-```
-Entier : 7
-Table de 1×7 jusqu'à 10×7
-```
+| Test | Résultat | Interprétation |
+|---|---|---|
+| Ljung-Box (corrélogramme des résidus) | p-values entre 0,182 et 0,758 | pas d'autocorrélation, résidus assimilables à un bruit blanc |
+| Jarque-Bera | 2,048 (p = 0,359) | normalité non rejetée |
+| ARCH-LM | p = 0,5988 | pas d'effet ARCH |
+| Durbin-Watson | 1,88 | pas d'autocorrélation d'ordre 1 |
 
-**Exercice 6 :**
-```
-Coût unitaire=50, Prix vente=70, Quantité=100
-Bénéfice = (70-50)×100 = 2000 MAD
-```
+### Prévision (2000-2030)
 
----
+| Indicateur | Valeur |
+|---|---|
+| RMSE | 0,348 |
+| MAE | 0,277 |
+| MAPE | 1,15 % |
+| Coefficient d'inégalité de Theil | 0,007 |
 
-## ❓ Aide et support
+La prévision indique une poursuite de la tendance haussière de LOG_EBS jusqu'en 2030.
 
-Si vous rencontrez des problèmes :
-1. Vérifiez que Python est bien installé : `python --version`
-2. Vérifiez que vous êtes dans le bon dossier
-3. Lisez les messages d'erreur dans le terminal
-4. Vérifiez votre saisie (types de données corrects)
+## Limites
 
----
+- Seulement **26 observations annuelles** : l'estimation et les tests ont une puissance limitée.
+- Un ARIMA(0,1,0) avec dérive est une marche aléatoire avec dérive : la prévision est une droite de tendance et ne capte aucune dynamique conjoncturelle (chocs de 2009 et 2020 par exemple).
+- Les indicateurs d'erreur (RMSE, MAE, MAPE) sont calculés sur la série en **logarithme**, ce qui rend le MAPE mécaniquement très faible. Une évaluation hors échantillon (*train / test*) serait plus informative.
+- Pistes d'amélioration : comparer avec d'autres spécifications (ARIMA(1,1,0), ARIMA(0,1,1)), ajouter des variables explicatives, évaluer la prévision hors échantillon.
 
-**Bon courage pour votre TP ! 🎓**
+## Outils
+
+EViews (tests ADF, corrélogrammes, estimation, tests de diagnostic, prévision).
+
+## Contenu du dépôt
+
+- `Projet_d_économétrie222.pdf` : rapport complet (partie théorique et pratique)
+- `data_projet_eco.xlsx` : données de la série `MARBXUSD`
+- `README.md` : ce fichier
+
+## Contact
+
+Fatima Rafiai · fatimarafiai0101@gmail.com · Tanger, Maroc
